@@ -1,0 +1,12 @@
+include: package:lint/analysis_options.yaml
+
+analyzer:
+  exclude:
+    - test/**/*.dart
+    - lib/presentation/localization/**/*.dart
+  errors:
+    missing_required_param: error
+
+linter:
+  rules:
+    avoid_classes_with_only_static_members: false

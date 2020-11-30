@@ -1,0 +1,12 @@
+ENV["MATCH_PASSWORD"] = "TODO ADD PASSWORD"
+ENV["FASTLANE_PASSWORD"] = "TODO ADD PASSWORD"
+git_url("TODO ADD GIT URL")
+
+storage_mode("git")
+
+type("development") # The default type, can be: appstore, adhoc, enterprise or development
+
+app_identifier("com.waloszek.nextmovie")
+username("TODO ADD USERNAME")
+shallow_clone true
+force_for_new_devices true

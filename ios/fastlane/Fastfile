@@ -1,0 +1,59 @@
+opt_out_usage
+
+ENV["FASTLANE_PASSWORD"] = "TODO ADD PASSWORD"
+
+update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Uploads dev iOS build to iTunes Connect"
+  lane :dev do |options|
+    reset_git_repo(force: true)
+
+    Dir.chdir "../.." do
+      update_build_number
+      sh("flutter packages get")
+      sh("flutter clean")
+      sh("flutter build ios --flavor dev -t lib/main_dev.dart")
+    end
+    build_app(scheme: "dev", workspace: "Runner.xcworkspace", export_method: "app-store")
+    upload_to_testflight
+    Dir.chdir "../.." do
+      commit_version_update(options[:branch])
+    end
+  end
+
+  lane :prod do |options|
+    reset_git_repo(force: true)
+
+    Dir.chdir "../.." do
+      sh("flutter packages get")
+      sh("flutter clean")
+      sh("flutter build ios --flavor prod -t lib/main_prod.dart")
+    end
+    build_app(scheme: "prod", workspace: "Runner.xcworkspace", export_method: "app-store")
+    upload_to_testflight
+  end
+end
+
+def commit_version_update(branch)
+  sh("git add ./pubspec.yaml")
+  sh("git commit -m \"Version bump\"")
+  sh("git push origin HEAD:#{branch}")
+end
+
+def update_build_number
+  filename = "./pubspec.yaml"
+  File.open(filename, 'r+') do |file|
+    lines = file.each_line.to_a
+    lines = lines.map { |line| line.start_with?('version') ? replace_build_number(line) : line }
+    file.rewind
+    file.write(lines.join)
+  end
+end
+
+def replace_build_number(line)
+  version = line.partition('+')
+  "#{version.first}+#{(version.last.to_i + 1).to_s}\n"
+end

@@ -1,0 +1,30 @@
+opt_out_usage
+
+update_fastlane
+
+default_platform(:android)
+
+platform :android do
+  desc "Uploads dev Android build to Google Play"
+    lane :dev do
+      reset_git_repo(force: true)
+
+      Dir.chdir "../.." do
+        sh("flutter packages get")
+        sh("flutter clean")
+        sh("flutter build appbundle --flavor dev -t lib/main_dev.dart")
+      end
+      upload_to_play_store(track: 'alpha', aab: '../build/app/outputs/bundle/devRelease/app-dev-release.aab', release_status: 'draft')
+    end
+
+    lane :prod do
+      reset_git_repo(force: true)
+
+      Dir.chdir "../.." do
+        sh("flutter packages get")
+        sh("flutter clean")
+        sh("flutter build appbundle --flavor prod -t lib/main_prod.dart")
+      end
+      upload_to_play_store(track: 'production', aab: '../build/app/outputs/bundle/prodRelease/app-prod-release.aab', release_status: 'draft')
+    end
+end

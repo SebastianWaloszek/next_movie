@@ -1,0 +1,2 @@
+# Import translated string .arb files for use in the app
+flutter packages pub run intl_translation:generate_from_arb --output-dir=\lib/presentation/localization/messages --no-use-deferred-loading \lib/presentation/localization/app_localizations.dart lib/presentation/localization/translations/intl_*.arb
