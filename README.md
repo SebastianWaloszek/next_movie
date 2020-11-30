@@ -5,6 +5,8 @@ A Flutter movie catalog app.
 ## UI & UX
 - [Figma design project](https://www.figma.com/file/PGhT5LNAtR50RS7w58CtYZ/next_movie_app_design)
 
+![alt text](https://mir-s3-cdn-cf.behance.net/project_modules/fs/fb60aa102811879.5f3eda5907ad3.png)
+
 ## Flutter version
 
 This app was developed and tested on the following flutter channel and version:
